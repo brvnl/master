@@ -26,10 +26,10 @@ for article in source.articles:
     visited += 1
     concluded = (visited / total) * 100
     if filterRegex.match(str(article.url)):
-        print "INFO - %.0f%% concluded. Downloading URL: %s" %(concluded, article.url)
-        #article.download()
-        #article.parse()
-        #article2file(article, path)
+        print "INFO - %.0f%%, Downloading URL: %s" %(concluded, article.url)
+        article.download()
+        article.parse()
+        article2file(article, path)
         counter += 1
 
 print "INFO - Done. %d articles saved to \"%s\"." %(counter, path)
