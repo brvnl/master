@@ -44,12 +44,15 @@ class NPSpyder:
         for article in self.source.articles:
             visited += 1
             concluded = (float(visited) / total) * 100
-            if self.filterRegex.match(str(article.url)):
-                print "INFO - %s %.0f%% concluded, downloading URL: %s" %(self.sourceName, concluded, article.url)
-                article.download()
-                article.parse()
-                article2file(article, path)
-                counter += 1
+            try:
+                if self.filterRegex.match(str(article.url)):
+                    print "INFO - %s %.0f%% concluded, downloading URL: %s" %(self.sourceName, concluded, article.url)
+                    article.download()
+                    article.parse()
+                    article2file(article, path)
+                    counter += 1
+            except:
+                print "WARN - Cannot apply filter due to special char in URL: %s" %(article.url)
 
         print "INFO - Done. %d out of %d articles saved to \"%s\"." %(counter, total, path)
 
