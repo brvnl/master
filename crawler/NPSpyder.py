@@ -12,9 +12,16 @@ class NPSpyder:
         # Source`s name to create a path where data will be saved.
         self.sourceName = name
 
+        # Setting preferences
+        config = newspaper.Config()
+        config.memoize_articles = True
+        config.keep_article_html = False
+        config.fetch_images = False
+        config.language = 'en'
+
         # Building a Newspapper crawler...
         # defines the source website object from where the news are to be retrieved
-        self.source = newspaper.build(sourceURL, memoize_articles=True, language='en', fetch_images=False)
+        self.source = newspaper.build(sourceURL, config)
 
         # Define a regex to filter relevant article`s URLs
         self.filterRegex = regex

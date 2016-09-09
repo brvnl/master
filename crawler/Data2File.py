@@ -1,12 +1,17 @@
 import os
 import time
 from newspaper import Article
-#from unicodedata import normalize
+import unicodedata
 
-def removeSpecialChar(txt):
-    normalizedstr = ''.join(e for e in txt if e.isalnum())
-    return normalizedstr
-    #return normalize('NFKD', txt.decode(codif)).encode('utf-8','ignore')
+def removeSpecialChar(text):
+    try:
+        text = unicode(text, 'utf-8')
+    except NameError: # unicode is a default on python 3
+        pass
+    text = unicodedata.normalize('NFD', text)
+    text = text.encode('ascii', 'ignore')
+    text = text.decode("utf-8")
+    return str(text)
 
 def getDataBasePath():
     return "../../data/"
@@ -19,7 +24,7 @@ def article2file( aArticle, path ):
     # Remove special characters (TO BE COMPLETED...)
     title4name = title4name.replace(" ", "")
     title4name = title4name.replace(",", "")
-    #title4name = removeSpecialChar(title4name)
+    title4name = removeSpecialChar(title4name)
 
     try:
         date4name = aArticle.publish_date.strftime('%Y%m%d%H%M%S')
