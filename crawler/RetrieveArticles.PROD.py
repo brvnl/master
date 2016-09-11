@@ -56,3 +56,10 @@ nasdakRegex = re.compile('.*', re.IGNORECASE)
 nasdak = NPSpyder('nasdaq.com','http://www.nasdaq.com/news/', nasdakRegex)
 nasdak.run()
 gc.collect()
+
+# Build Forbes
+forbesRegex = re.compile('.*(www.forbes.com/|www.forbes.com.br/).*', re.IGNORECASE)
+forbes = NPSpyder('forbes.com','http://www.forbes.com/', forbesRegex)
+forbes.visit()
+gc.collect()
+
