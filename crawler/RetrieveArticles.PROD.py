@@ -35,9 +35,9 @@ bloomberg = NPSpyder('bloomberg.com','http://www.bloomberg.com/', bloombergRegex
 bloomberg.run()
 
 # Build Reuters
-#reutersRegex = re.compile('.*(article).*', re.IGNORECASE)
-#reuters = NPSpyder('reuters.com','http://www.reuters.com/', reutersRegex)
-#reuters.run()
+reutersRegex = re.compile('.*(article).*', re.IGNORECASE)
+reuters = NPSpyder('reuters.com','http://www.reuters.com/', reutersRegex)
+reuters.run()
 
 # Build The Guardian
 #theGuardianRegex = re.compile('.*', re.IGNORECASE)
