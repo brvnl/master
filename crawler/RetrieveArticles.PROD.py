@@ -59,7 +59,12 @@ gc.collect()
 
 # Build Forbes
 forbesRegex = re.compile('.*(www.forbes.com/|www.forbes.com.br/).*', re.IGNORECASE)
-forbes = NPSpyder('forbes.com','http://www.forbes.com/', forbesRegex, 1)
+forbes = NPSpyder('forbes.com','http://www.forbes.com/', forbesRegex)
 forbes.run()
 gc.collect()
 
+# Build Investors
+investorsRegex = re.compile('.*', re.IGNORECASE)
+investors = NPSpyder('investors.com','http://www.investors.com/news/', investorsRegex, 1)
+investors.visit()
+gc.collect()
