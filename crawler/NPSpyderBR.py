@@ -12,7 +12,7 @@ class NPSpyderBR(NPSpyder):
 
         # Building a Newspapper crawler...
         # defines the source website object from where the news are to be retrieved
-        self.source = newspaper.build(sourceURL, memoize_articles=False, language='pt', fetch_images=False)
+        self.source = newspaper.build(sourceURL, language='pt', fetch_images=False)
 
         # Define a regex to filter relevant article`s URLs
         self.filterRegex = regex
