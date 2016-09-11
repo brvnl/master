@@ -50,3 +50,9 @@ theGuardianRegex = re.compile('.*', re.IGNORECASE)
 theGuardian = NPSpyder('theguardian.com','https://www.theguardian.com/', theGuardianRegex)
 theGuardian.run()
 gc.collect()
+
+# Build Nasdak
+nasdakRegex = re.compile('.*', re.IGNORECASE)
+nasdak = NPSpyder('nasdaq.com','http://www.nasdaq.com/news/', nasdakRegex)
+nasdak.run()
+gc.collect()
