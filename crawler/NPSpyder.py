@@ -14,7 +14,7 @@ class NPSpyder:
 
         # Setting preferences
         config = newspaper.Config()
-        config.memoize_articles = True
+        config.memoize_articles = False
         config.keep_article_html = False
         config.fetch_images = False
         config.language = 'en'
