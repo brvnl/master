@@ -4,6 +4,7 @@ from NPSpyder import NPSpyder
 from NPSpyderBR import NPSpyderBR
 import logging
 import re
+import gc
 
 logging.basicConfig(level=logging.CRITICAL)
 
