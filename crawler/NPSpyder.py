@@ -8,14 +8,17 @@ class NPSpyder:
     # name: ID to be used to name folders etc.
     # sourceURL: Initial URL from where the spider will start to craw. Ex.: http://www.bloomberg.com/
     # regex: This regex will be applied to filter relevant URLs to be downloaded. Ex.: re.compile('.*(politics|economy).*', re.IGNORECASE)
-    def __init__(self, name, sourceURL, regex):
+    def __init__(self, name, sourceURL, regex, firstRun=0):
         # Source`s name to create a path where data will be saved.
         self.sourceName = name
 
         # Building a Newspapper crawler...
         # defines the source website object from where the news are to be retrieved
-        self.source = newspaper.build(sourceURL, language='en', fetch_images=False)
-
+        if (firstRun == 1):
+            self.source = newspaper.build(sourceURL, language='en', fetch_images=False, memoize_articles=False)
+        else:
+            self.source = newspaper.build(sourceURL, language='en', fetch_images=False)
+            
         # Define a regex to filter relevant article`s URLs
         self.filterRegex = regex
 
