@@ -65,11 +65,20 @@ gc.collect()
 
 # Build Investors
 investorsRegex = re.compile('.*', re.IGNORECASE)
-investors = NPSpyder('investors.com','http://www.investors.com/news/', investorsRegex, 1)
+investors = NPSpyder('investors.com','http://www.investors.com/news/', investorsRegex)
 investors.run()
 gc.collect()
 
 # Build The Wall Street Journal
 theStreetRegex = re.compile('.*(thestreet.com/story|thestreet.com/articles).*', re.IGNORECASE)
-theStreet = NPSpyder('thestreet.com','https://www.thestreet.com/', theStreetRegex, 1)
+theStreet = NPSpyder('thestreet.com','https://www.thestreet.com/', theStreetRegex)
 theStreet.run()
+gc.collect()
+
+# Build The Economist
+economistRegex = re.compile('.*(www.economist.com/news/).*', re.IGNORECASE)
+economist = NPSpyder('economist.com','http://www.economist.com/', economistRegex)
+economist.visit()
+gc.collect()
+
+print "INFO - All feeders crawled."
