@@ -78,7 +78,7 @@ gc.collect()
 # Build The Economist
 economistRegex = re.compile('.*(www.economist.com/news/).*', re.IGNORECASE)
 economist = NPSpyder('economist.com','http://www.economist.com/', economistRegex)
-economist.visit()
+economist.run()
 gc.collect()
 
 print "INFO - All feeders crawled."
