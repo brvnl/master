@@ -28,7 +28,7 @@ class NPSpyder:
     def run(self):
         # Defining the path to save files
         path = getDataBasePath() + "/" + self.sourceName + "/"
-        start = time.time()
+        start_time = time.time()
 
         print("INFO - Crawling "+ self.sourceName +".")
 
