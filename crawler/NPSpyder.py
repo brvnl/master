@@ -1,5 +1,6 @@
 import newspaper
 import re
+import time
 from Data2File import getDataBasePath, article2file
 
 class NPSpyder:
@@ -18,7 +19,7 @@ class NPSpyder:
             self.source = newspaper.build(sourceURL, language='en', fetch_images=False, memoize_articles=False)
         else:
             self.source = newspaper.build(sourceURL, language='en', fetch_images=False)
-            
+
         # Define a regex to filter relevant article`s URLs
         self.filterRegex = regex
 
@@ -27,6 +28,7 @@ class NPSpyder:
     def run(self):
         # Defining the path to save files
         path = getDataBasePath() + "/" + self.sourceName + "/"
+        start = time.time()
 
         print("INFO - Crawling "+ self.sourceName +".")
 
@@ -51,6 +53,9 @@ class NPSpyder:
                 print "WARN - Cannot apply filter due to special char in URL: %s" %(article.url)
 
         print "INFO - Done. %d out of %d articles saved to \"%s\"." %(counter, total, path)
+        elapsed_time = time.time() - start_time
+        print "INFO - %s crawled in %d seconds." %(self.sourceName, elapsed_time)
+        return counter
 
 
     # Will visit and print all URLs available on the website without downloading.
