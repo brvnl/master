@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Investment Advisor</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in_register">Register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="success_register">User registered successfully.</string>
+    <string name="news_loading_title">Server communication</string>
+    <string name="news_loading_message">Loading news articles...</string>
+    <!--string name="news_loading_full_message">Loading article's full text...</string-->
+    <string name="error_server_failed">Failed to contact the server.</string>
+    <string name="error_logged_already">Already logged in.</string>
+    <string name="error_register_exists">User already exists.</string>
+    <string name="error_unable2register">Unable to register user.</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="error_notLogged">Not logged in. Please log in before retrieving news.</string>
+    <string name="error_failed2contactServer">Failed to contact remote server. Try again later.</string>
+    <string name="edit_useremail">example@example.com.br</string>
+    <string name="edit_password">your password</string>
+    <string name="edit_keywords">your keywords, split by comma</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_news">Latest news...</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_tabbed">TabbedActivity</string>
+    <string name="title_activity_news_viewer1">Latest news...</string>
+</resources>
