@@ -252,9 +252,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             String userDetails = email;
             //showProgress(true);
-            Intent intent = new Intent(LoginActivity.this, Subscribe.class);
+            /*Intent intent = new Intent(LoginActivity.this, Subscribe.class);
             intent.putExtra("user", email);
-            this.startActivity(intent);
+            this.startActivity(intent);*/
         }
     }
 
@@ -425,4 +425,3 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 }
-

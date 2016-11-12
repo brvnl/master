@@ -12,14 +12,15 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_news_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,20 +29,16 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity android:name=".Subscribe" />
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".NewsActivity"
-            android:label="@string/title_activity_news"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".TabbedActivity"
-            android:label="@string/title_activity_tabbed"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".SubscribeActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".NewsViewer1Activity"
             android:label="@string/title_activity_news_viewer1"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

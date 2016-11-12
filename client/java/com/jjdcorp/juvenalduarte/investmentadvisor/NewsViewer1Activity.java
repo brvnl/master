@@ -246,7 +246,7 @@ public class NewsViewer1Activity extends AppCompatActivity {
             setServerStatus();
             awakeServer();
             if (!success) {
-                Snackbar mySnackbar = Snackbar.make(findViewById(R.id.news_form), R.string.error_server_failed, Snackbar.LENGTH_LONG);
+                Snackbar mySnackbar = Snackbar.make(findViewById(R.id.newsview1_form), R.string.error_server_failed, Snackbar.LENGTH_LONG);
                 mySnackbar.show();
             } else {
                 mViewPager.invalidate();

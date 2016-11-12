@@ -14,11 +14,11 @@
     tools:showIn="@layout/app_bar_main">
 
     <TextView
-    android:id="@+id/content_main_tv"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Welcome to Investment Advisor!"
-    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:id="@+id/content_main_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to Investment Advisor!"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textSize="24sp" />
 
     <TextView
