@@ -8,7 +8,6 @@ import re
 logging.basicConfig(format='%(asctime)s %(levelname)s* %(message)s', level=logging.INFO)
 AUTHENTICATION_FILES_PATH="../../authentication/"
 KEYWORDS_FILES_PATH="../../keywords/"
-#host = socket.gethostbyname(socket.gethostname())
 stmp = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 stmp.connect(("gmail.com",80))
 host = stmp.getsockname()[0]
@@ -37,7 +36,7 @@ def checkCredentials(usr, pwd):
         status =  1
     return status
 
-def saveCredentials(usr, pwd, keywrds):
+def saveCredentials(usr, pwd, keywrds, nkeywrds):
     # Saves a file with the password
     fname = AUTHENTICATION_FILES_PATH + usr
     file = open(fname, "w")
@@ -45,11 +44,31 @@ def saveCredentials(usr, pwd, keywrds):
     file.close()
 
     # Saves the keywords on a different file
-    fname = KEYWORDS_FILES_PATH + usr
+    fname = KEYWORDS_FILES_PATH + usr + ".pos"
     file = open(fname, "w")
     file.write(keywrds)
     file.close()
 
+    # Saves the nkeywords on a different file
+    fname = KEYWORDS_FILES_PATH + usr + ".neg"
+    file = open(fname, "w")
+    file.write(nkeywrds)
+    file.close()
+
+    return 0
+
+def saveKeywords(usr, keywrds, nkeywrds):
+    # Saves the keywords on a different file
+    fname = KEYWORDS_FILES_PATH + usr + ".pos"
+    file = open(fname, "w")
+    file.write(keywrds)
+    file.close()
+
+    # Saves the keywords on a different file
+    fname = KEYWORDS_FILES_PATH + usr + ".neg"
+    file = open(fname, "w")
+    file.write(nkeywrds)
+    file.close()
     return 0
 
 
@@ -74,17 +93,25 @@ while True:
 
     logging.info("Got connection from %s." %(str(addr)))
     msg = conn.recv(1024)
-    
+
     # Remove first bytes added by Java
     msg = re.sub('^[^@]*@', '@', msg)
 
     logging.info("Request:" + msg)
     parameters = msg.split(";")
 
-    if (len(parameters) != 4):
-        continue
+    #if (len(parameters) != 4):
+    #    continue
 
-    operation, usr, passwd, keywrds = parameters
+    operation= parameters[0]
+    usr= parameters[1]
+    passwd = parameters[2]
+
+    logging.info("Parameters parsed:")
+    logging.info("   operation=" + operation)
+    logging.info("   user=" + usr)
+    logging.info("   password=" + passwd)
+
     usr = usr.split(":")[1]
     passwd = passwd.split(":")[1]
     operation = '@' + operation.split('@')[1]
@@ -104,14 +131,37 @@ while True:
     elif (operation == "@register"):
         retrn = checkCredentials(usr, passwd)
 
+        keywrds = parameters[3]
+        nkeywrds = parameters[4]
+        logging.info("   Postive Keys=" + keywrds)
+        logging.info("   Negative Keys=" + nkeywrds)
+
         if ((retrn == 0) or (retrn == 3)):
             sent = conn.send("Already exists\r\n")
             logging.info("Registration refused for %s:%s. User already exists." %(usr, passwd))
         else:
-            saveCredentials(usr, passwd, keywrds)
+            saveCredentials(usr, passwd, keywrds, nkeywrds)
             sent = conn.send("Succeed\r\n")
             logging.info("Registration succeed for %s:%s." %(usr, passwd))
 
+    elif (operation == "@updatekeys"):
+        retrn = checkCredentials(usr, passwd)
+
+        keywrds = parameters[3]
+        nkeywrds = parameters[4]
+        logging.info("   Postive Keys=" + keywrds)
+        logging.info("   Negative Keys=" + nkeywrds)
+
+        if (retrn == 0):
+            saveKeywords(usr, keywrds, nkeywrds)
+            sent = conn.send("Succeed\r\n")
+            logging.info("Keys update succeed for %s:%s." %(usr, passwd))
+        else:
+            sent = conn.send("Failed\r\n")
+            logging.info("Keys update refused for %s:%s. Could not match credentials." %(usr, passwd))
+
+
+    logging.info("Request concluded.")
     conn.close()
 
 soc.close()
