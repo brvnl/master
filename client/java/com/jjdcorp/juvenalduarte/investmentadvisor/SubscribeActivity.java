@@ -23,6 +23,7 @@ public class SubscribeActivity extends AppCompatActivity {
     private EditText mUserIDView;
     private EditText mPasswordView;
     private EditText mKeywordsView;
+    private EditText mNKeywordsView;
     private View mProgressView;
     private View mRegisterFormView;
 
@@ -44,6 +45,7 @@ public class SubscribeActivity extends AppCompatActivity {
         mPasswordView.requestFocus();
 
         mKeywordsView = (EditText) findViewById(R.id.editTextKeywords);
+        mNKeywordsView = (EditText) findViewById(R.id.editTextNKeywords);
 
         // Defining a listener for the button
         mSubmmitButton = (Button) findViewById(R.id.credentialsSubmitButton);
@@ -98,16 +100,18 @@ public class SubscribeActivity extends AppCompatActivity {
         private final String email;
         private final String password;
         private final String keywords;
+        private final String nkeywords;
 
-        public UserSubscribeTask(String email, String password, String keywords) {
+        public UserSubscribeTask(String email, String password, String keywords, String nkeywords) {
             this.email = email;
             this.password = password;
             this.keywords = keywords;
+            this.nkeywords = nkeywords;
         }
 
         @Override
         protected Integer doInBackground(Void... params) {
-            ServerSubscribe aServerSubs = new ServerSubscribe(this.email, this.password, this.keywords);
+            ServerSubscribe aServerSubs = new ServerSubscribe(this.email, this.password, this.keywords, this.nkeywords);
             int regStatus = aServerSubs.Register();
             return regStatus;
         }
@@ -120,7 +124,9 @@ public class SubscribeActivity extends AppCompatActivity {
                 LoginStatusSingleton logInStatus = LoginStatusSingleton.getInstance();
                 logInStatus.logIn();
                 logInStatus.setCredentials(new ServerLogIn(this.email, this.password));
-                logInStatus.setKeywords(this.keywords);
+
+                String keys = this.keywords + "|" + this.nkeywords;
+                logInStatus.setKeywords(keys);
                 finish();
                 onBackPressed();
 
@@ -145,6 +151,7 @@ public class SubscribeActivity extends AppCompatActivity {
         String sUserId = mUserIDView.getText().toString();
         String sPasswd = mPasswordView.getText().toString();
         String sKeyWrd = mKeywordsView.getText().toString();
+        String sNKeyWrd = mNKeywordsView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -173,7 +180,7 @@ public class SubscribeActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            UserSubscribeTask tskRegister = new UserSubscribeTask(sUserId, sPasswd, sKeyWrd);
+            UserSubscribeTask tskRegister = new UserSubscribeTask(sUserId, sPasswd, sKeyWrd, sNKeyWrd);
             tskRegister.execute();
         }
     }

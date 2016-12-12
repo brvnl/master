@@ -1,5 +1,6 @@
 package com.jjdcorp.juvenalduarte.investmentadvisor;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     public boolean loggedIn = false;
+    TextView mkeywordsViewr;
+    TextView mNkeywordsViewr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mkeywordsViewr = (TextView) findViewById(R.id.content_main_tv2);
+        mNkeywordsViewr = (TextView) findViewById(R.id.content_main_tv3);
     }
 
     @Override
@@ -62,11 +68,23 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         TextView tv1 = (TextView) findViewById(R.id.textView);
-        TextView tv2 = (TextView) findViewById(R.id.content_main_tv2);
         LoginStatusSingleton status = LoginStatusSingleton.getInstance();
         if (status.getStatus()) {
             tv1.setText(status.getCredentials().user);
-            tv2.setText("Your keywords are: " + status.getKeywords());
+            String kwordsStr = status.getKeywords();
+            String[] keywords = kwordsStr.split("\\|", -1);
+
+            try {
+                mkeywordsViewr.setText("Positive Keywords: " + keywords[0]);
+                mkeywordsViewr.setTextColor(Color.rgb(0, 0, 102)); // Dark Blue
+            } catch (Exception e) {
+            }
+
+            try {
+                mNkeywordsViewr.setText("Negative Keywords: " + keywords[1]);
+                mNkeywordsViewr.setTextColor(Color.rgb(102,0,0)); // Dark Red
+            } catch (Exception e) {
+            }
 
         } else {
             tv1.setText("Not logged yet...");
@@ -84,7 +102,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(this, SettingsActivity.class);
+            this.startActivity(intent);
         }
         invalidateOptionsMenu();
         return super.onOptionsItemSelected(item);
@@ -102,13 +121,24 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.RetrieveNews) {
             LoginStatusSingleton logInStatus = LoginStatusSingleton.getInstance();
             if (logInStatus.getStatus()) {
-                //Intent intent = new Intent(this, NewsActivity.class);
                 Intent intent = new Intent(this, NewsViewer1Activity.class);
                 this.startActivity(intent);
             } else {
                 Snackbar mySnackbar = Snackbar.make(findViewById(R.id.content_main), R.string.error_notLogged, Snackbar.LENGTH_LONG);
                 mySnackbar.show();
             }
+        } else if (id == R.id.SummaryView) {
+            LoginStatusSingleton logInStatus = LoginStatusSingleton.getInstance();
+            if (logInStatus.getStatus()) {
+                Intent intent = new Intent(this, SumaryViewActivity.class);
+                this.startActivity(intent);
+            } else {
+                Snackbar mySnackbar = Snackbar.make(findViewById(R.id.content_main), R.string.error_notLogged, Snackbar.LENGTH_LONG);
+                mySnackbar.show();
+            }
+        } else if (id == R.id.Exit) {
+            finish();
+            System.exit(0);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -126,6 +156,16 @@ public class MainActivity extends AppCompatActivity
         invalidateOptionsMenu();
         super.onResume();
         return ;
+    }
+
+    public void onKeywordsClicked(View v) {
+        if (LoginStatusSingleton.getInstance().getStatus()) {
+            Intent intent = new Intent(this, UpdateKeysActivity.class);
+            this.startActivity(intent);
+        } else {
+            Snackbar mySnackbar = Snackbar.make(findViewById(R.id.content_main), R.string.error_notLogged, Snackbar.LENGTH_LONG);
+            mySnackbar.show();
+        }
     }
 
 }

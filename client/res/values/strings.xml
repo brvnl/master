@@ -36,4 +36,91 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_tabbed">TabbedActivity</string>
     <string name="title_activity_news_viewer1">Latest news...</string>
+    <string name="title_activity_update">UpdateActivity</string>
+    <string name="positiveKeys">Positive Keys</string>
+    <string name="negativeKeys">Negative Keys</string>
+    <!--string name="hist4keys">Use | as OR, &amp; as AND.</string-->
+    <string name="hist4keys">Split keywords by comma.</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Time Window</string>
+    <string name="pref_default_display_name">John Smith</string>
+    <string name="pref_default_timewindow">7</string>
+
+    <string name="pref_feeders">Select feeder jornals</string>
+    <string-array name="pref_example_list_values">
+        <item>bloomberg.com</item>
+        <item>br.advfn.com</item>
+        <item>economist.com</item>
+        <item>estadao.com.br</item>
+        <item>forbes.com</item>
+        <item>g1.globo.com</item>
+        <item>investors.com</item>
+        <item>nasdaq.com</item>
+        <item>reuters.com</item>
+        <item>theguardian.com</item>
+        <item>thestreet.com</item>
+        <item>uol.com.br</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <!--string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array-->
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_sources">Data Sources</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="title_activity_article_viewer">ArticleViewerActivity</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+    </string>
 </resources>

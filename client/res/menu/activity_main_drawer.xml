@@ -7,9 +7,17 @@
             android:icon="@drawable/ic_menu_manage"
             android:title="Log In" />
         <item
+            android:id="@+id/SummaryView"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Summary View" />
+        <item
             android:id="@+id/RetrieveNews"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Retrieve News" />
+            android:title="Newspapper View" />
+        <item
+            android:id="@+id/Exit"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Exit" />
     </group>
 
 </menu>

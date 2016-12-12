@@ -251,10 +251,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             focusView.requestFocus();
         } else {
             String userDetails = email;
-            //showProgress(true);
-            /*Intent intent = new Intent(LoginActivity.this, Subscribe.class);
+            Intent intent = new Intent(LoginActivity.this, SubscribeActivity.class);
             intent.putExtra("user", email);
-            this.startActivity(intent);*/
+            this.startActivity(intent);
         }
     }
 
@@ -389,15 +388,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // Force to fetch articles
                 //ServerData.getInstance().fetchArticles(servConn.user,servConn.password);
 
-            } /*else if (returnCode == 1) {
-                authBool = false;
-            } else if (returnCode == 2) {
-                Snackbar mySnackbar = Snackbar.make(findViewById(R.id.login_form), R.string.error_failed2contactServer, Snackbar.LENGTH_LONG);
-                mySnackbar.show();
-                authBool = false;
-            } else if (returnCode == 3) {
-                authBool = false;
-            }*/
+            }
 
             return returnCode;
         }

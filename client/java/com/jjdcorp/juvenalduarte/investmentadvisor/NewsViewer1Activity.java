@@ -1,8 +1,9 @@
 package com.jjdcorp.juvenalduarte.investmentadvisor;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.design.widget.FloatingActionButton;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,16 +13,21 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class NewsViewer1Activity extends AppCompatActivity {
     private View mProgressViewNews;
@@ -53,10 +59,15 @@ public class NewsViewer1Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_viewer1);
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String allFeeders = "bloomberg.comOV=I=XseparatorX=I=VObr.advfn.comOV=I=XseparatorX=I=VOeconomist.comOV=I=XseparatorX=I=VOestadao.com.brOV=I=XseparatorX=I=VOforbes.comOV=I=XseparatorX=I=VOg1.globo.comOV=I=XseparatorX=I=VOinvestors.comOV=I=XseparatorX=I=VOnasdaq.comOV=I=XseparatorX=I=VOreuters.comOV=I=XseparatorX=I=VOtheguardian.comOV=I=XseparatorX=I=VOthestreet.comOV=I=XseparatorX=I=VOuol.com.br";
+        String feeders_text = preferences.getString("mlist_feeders", allFeeders);
+        int timewindow = Integer.parseInt(preferences.getString("edit_timewindow","7"));
+
         setServerStatus();
         if (!getServerStatus()){
             ServerLogIn servConn = LoginStatusSingleton.getInstance().getCredentials();
-            DataServerFetchTask fetchTsk = new DataServerFetchTask(servConn.user,servConn.password);
+            DataServerFetchTask fetchTsk = new DataServerFetchTask(servConn.user,servConn.password, feeders_text, timewindow);
             fetchTsk.execute();
             waitServer("Fetching articles from server...");
         }
@@ -130,12 +141,15 @@ public class NewsViewer1Activity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_news_viewer1, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            TextView fText = (TextView) rootView.findViewById(R.id.news_fulltext);
+            WebView fText = (WebView) rootView.findViewById(R.id.news_fulltext);
             TextView urlView = (TextView) rootView.findViewById(R.id.news_url);
             TextView timeView = (TextView) rootView.findViewById(R.id.news_timestamp);
 
+            String fullTextHtml = txtToHtml(getArguments().getString("text"));
+
             textView.setText(getArguments().getString("title"));
-            fText.setText(getArguments().getString("text"));
+            //fText.loadData(fullTextHtml, "text/html", null);
+            fText.loadDataWithBaseURL(null, fullTextHtml, "text/html", "utf-8", null);
             urlView.setText(getArguments().getString("url"));
             timeView.setText(getArguments().getString("time"));
             //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
@@ -167,19 +181,15 @@ public class NewsViewer1Activity extends AppCompatActivity {
                 url = current.url;
 
                 SimpleDateFormat input = new SimpleDateFormat("yyyyMMddhhmmss");
-                SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
                     time =  output.format(input.parse(current.timestamp));
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    time = "9999-99-99";
+                    time = "9999-99-99 99:99:99";
                 }
             } else {
-                /*title = "Title " + position;
-                text = "Text " + position;
-                url = "URL " + position;
-                time = "Time " + position;*/
                 title = "";
                 text = "";
                 url = "";
@@ -228,16 +238,20 @@ public class NewsViewer1Activity extends AppCompatActivity {
     public class DataServerFetchTask extends AsyncTask<Void, Void, Boolean> {
         private String email;
         private String password;
+        private String feeders;
+        private int timewindow;
 
-        public DataServerFetchTask(String email, String password) {
+        public DataServerFetchTask(String email, String password, String feeders, int tw) {
             this.email = email;
             this.password = password;
+            this.feeders = feeders;
+            this.timewindow = tw;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             ServerData userStore = ServerData.getInstance();
-            userStore.fetchArticles(this.email, this.password);
+            userStore.fetchArticles(this.email, this.password, this.feeders, this.timewindow);
             return true;
         }
 
@@ -302,6 +316,70 @@ public class NewsViewer1Activity extends AppCompatActivity {
             progressDialog.dismiss();
             progressDialog = null;
         }
+    }
+
+    public static String txtToHtml(String s) {
+        StringBuilder builder = new StringBuilder();
+        boolean previousWasASpace = false;
+
+        // Header
+        builder.append("<html><body>");
+        builder.append("<p align=\"justify\">");
+
+        for (char c : s.toCharArray()) {
+            if (c == ' ') {
+                if (previousWasASpace) {
+                    builder.append("&nbsp;");
+                    previousWasASpace = false;
+                    continue;
+                }
+                previousWasASpace = true;
+            } else {
+                previousWasASpace = false;
+            }
+            switch (c) {
+                case '<':
+                    builder.append("&lt;");
+                    break;
+                case '>':
+                    builder.append("&gt;");
+                    break;
+                case '&':
+                    builder.append("&amp;");
+                    break;
+                case '"':
+                    builder.append("&quot;");
+                    break;
+                case '\n':
+                    builder.append("<br>");
+                    break;
+                case '\t':
+                    builder.append("&nbsp; &nbsp; &nbsp;");
+                    break;
+                default:
+                    builder.append(c);
+
+            }
+        }
+
+        // Footer
+        builder.append("</p>");
+        builder.append("</body></html>");
+
+        String converted = builder.toString();
+        String str = "(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\'\".,<>?«»“”‘’]))";
+        Pattern patt = Pattern.compile(str);
+        Matcher matcher = patt.matcher(converted);
+        converted = matcher.replaceAll("<a href=\"$1\">$1</a>");
+
+        // Highlight keywords
+        String[] keys = LoginStatusSingleton.getInstance().keywords.split(", ");
+        String regex = "("  + TextUtils.join("|", keys) + ")";
+        Pattern pattrn = Pattern.compile(regex);
+        Matcher matchr = pattrn.matcher(converted);
+        converted = matchr.replaceAll("<mark>$1</mark>");
+
+        return converted;
     }
 
 }

@@ -12,15 +12,15 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_news_icon"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,15 +30,33 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SubscribeActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".NewsViewer1Activity"
             android:label="@string/title_activity_news_viewer1"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UpdateActivity"
+            android:label="@string/title_activity_update"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UpdateKeysActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".SumaryViewActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ArticleViewerActivity"
+            android:label="@string/title_activity_article_viewer"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

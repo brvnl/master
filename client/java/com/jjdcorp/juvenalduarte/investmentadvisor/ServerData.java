@@ -46,8 +46,70 @@ public class ServerData{
         return instance;
     }
 
+    public static ServerData reset() {
+        instance = new ServerData();
+        return instance;
+    }
+
     public void setCustomObjectListener(DataServerListener listener) {
         this.listener = listener;
+    }
+
+    public boolean fetchArticles(String user, String password, String feeders, int timewd){
+
+        // Connecting to the server
+        try{
+            InetAddress serverAddr = InetAddress.getByName(this.host);
+            this.soc = new Socket(serverAddr,this.port);
+        }catch(Exception e){
+            e.printStackTrace();
+            this.soc = null;
+            System.out.println("DEBUG* Failed to get a socket on Fetch Article");
+            return false;
+        }
+
+        // Adding articles to the list. Receiving data from the server.
+        this.articles = new LinkedList<Article>();
+        System.out.println("DEBUG* Got a socket on Fetch Article");
+        String request = "@fetchUserArticles;user:" + user + ";password:" + password + ";feeders:" + feeders + ";timewindow:" + timewd;
+        try {
+            DataOutputStream dout = new DataOutputStream(soc.getOutputStream());
+            dout.writeUTF(request);
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+            String incoming = "";
+
+            while ((incoming = br.readLine()) != null) {
+                System.out.println("DEBUG* Incoming on Fetch Article: " + incoming);
+                if (incoming.replace("\n", "").replace("\r", "").contentEquals("Done")) {
+                    break;
+                }
+                Article newArticle = new Article(incoming);
+                this.articles.add(newArticle);
+            }
+
+            dout.flush();
+            dout.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                this.soc.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Downloading full content for each article
+        Iterator<Article> it = articles.iterator();
+        while (it.hasNext()) {
+            Article current = it.next();
+            downloadArticle(current);
+        }
+
+        this.articleIndex = 0;
+        return true;
     }
 
     public boolean fetchArticles(String user, String password){
@@ -81,12 +143,7 @@ public class ServerData{
                 }
                 Article newArticle = new Article(incoming);
                 this.articles.add(newArticle);
-                    /*System.out.println("DEBUG* New Article id: " + newArticle.id);
-                    System.out.println("DEBUG* New Article timestamp: " + newArticle.timestamp);
-                    System.out.println("DEBUG* New Article title: " + newArticle.title);
-                    System.out.println("DEBUG* New Article url: " + newArticle.url);*/
             }
-
 
             dout.flush();
             dout.close();

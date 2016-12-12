@@ -1,0 +1,63 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="bloomberg.com"
+        android:title="bloomberg.com" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="br.advfn.com"
+        android:title="br.advfn.com" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="economist.com"
+        android:title="economist.com" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="estadao.com.br"
+        android:title="estadao.com.br" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="forbes.com"
+        android:title="forbes.com" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="g1.globo.com"
+        android:title="g1.globo.com" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="investors.com"
+        android:title="investors.com" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="nasdaq.com"
+        android:title="nasdaq.com" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="reuters.com"
+        android:title="reuters.com" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="theguardian.com"
+        android:title="theguardian.com" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="thestreet.com"
+        android:title="thestreet.com" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="uol.com.br"
+        android:title="uol.com.br" />
+
+</PreferenceScreen>
