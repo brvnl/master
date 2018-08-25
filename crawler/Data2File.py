@@ -48,7 +48,8 @@ def article2file( aArticle, path ):
         os.makedirs(path)
 
     # Composing the file name enforcing backslash.
-    filename = path + "/" + date4name + '.' + title4name + '.txt'
+    #filename = path + "/" + date4name + '.' + title4name + '.txt'
+    filename = path + "/" + date4name + title4name + '.txt'
 
     try:
         # Write article`s data to a file whose name follows the pattern timestamp+title.
