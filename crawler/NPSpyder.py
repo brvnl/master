@@ -1,3 +1,5 @@
+from __future__ import print_function
+import traceback
 import newspaper
 import re
 import time
@@ -27,7 +29,7 @@ class NPSpyder:
     # Will visit one by one of the articles available on the website, downloading pages that satisfies the filter regex
     def run(self):
         # Defining the path to save files
-        path = getDataBasePath() + "/" + self.sourceName + "/"
+        basepath = getDataBasePath() + "/" + self.sourceName + "/"
         start_time = time.time()
 
         print("INFO - Crawling "+ self.sourceName +".")
@@ -42,19 +44,39 @@ class NPSpyder:
         for article in self.source.articles:
             visited += 1
             concluded = (float(visited) / total) * 100
+
+            # Complementing the paht with the month folder: yyyyMM
+            try:
+                path = basepath + article.publish_date.strftime('%Y%m') + "/"
+            except:
+                # If cannot retrieve publish date defaults to the day it has been captured
+                path = basepath + time.strftime('%Y%m', time.gmtime()) + "/"
+
             try:
                 if self.filterRegex.match(str(article.url)):
-                    print "INFO - %s %.0f%% concluded, downloading URL: %s" %(self.sourceName, concluded, article.url)
+                    print("INFO - %s %.0f%% concluded, downloading URL: %s" %(self.sourceName, concluded, article.url))
                     article.download()
                     article.parse()
                     article2file(article, path)
                     counter += 1
             except:
-                print "WARN - Cannot apply filter due to special char in URL: %s" %(article.url)
+                # Common exception is special char on URL, try to recover by removing special chars before capture
+                try:
+                    theURL = re.sub('\W+','', article.url)
+                    if self.filterRegex.match(str(theURL)):
+                        print("INFO - %s %.0f%% concluded, downloading URL: %s" %(self.sourceName, concluded, article.url))
+                        article.download()
+                        article.parse()
+                        article2file(article, path)
+                        counter += 1
 
-        print "INFO - Done. %d out of %d articles saved to \"%s\"." %(counter, total, path)
+                except:
+                    print("WARN - Cannot apply filter due to special char in URL: %s" %(article.url))
+                    traceback.print_exc()
+
+        print("INFO - Done. %d out of %d articles saved to \"%s\"." %(counter, total, path))
         elapsed_time = time.time() - start_time
-        print "INFO - %s crawled in %d seconds." %(self.sourceName, elapsed_time)
+        print("INFO - %s crawled in %d seconds." %(self.sourceName, elapsed_time))
         return counter
 
 
@@ -64,5 +86,16 @@ class NPSpyder:
         print("INFO - Visiting "+ self.sourceName +".")
         # Filtering relevant articles
         for article in self.source.articles:
-            if self.filterRegex.match(str(article.url)):
-                print "INFO - %s" %(article.url)
+            try:
+                if self.filterRegex.match(str(article.url)):
+                    print("INFO - %s" %(article.url))
+            except:
+                # Common exception is special char on URL, try to recover by removing special chars before capture
+                try:
+                    theURL = re.sub('\W+','', article.url)
+                    if self.filterRegex.match(str(theURL)):
+                        print("INFO - %s" %(article.url))
+
+                except:
+                    print("WARN - Cannot apply filter due to special char in URL: %s" %(article.url))
+        return 0
