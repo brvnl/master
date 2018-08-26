@@ -10,21 +10,28 @@ The goal is to use the script for analysis, and then later to use the informatio
 
 usage() {
    echo "Usage:
-	 $0 [-n <rank>] [-p <path>]
+	 $0 [-n <rank>] [-p <path>] [-f]
 Where:
 	-n: The script will print the first n file names with more ocurrence. If not provided defaults to 15.
+	-f: Writes the output to file instead of stdout. If file name is not provided the default is \"./$0.txt\".
 	-p: The path where the articl files are stored. If not provided defaults to the working dir.";
 }
 
 rank=15
 path="."
-while getopts ":n:p:h" o; do
+tofile="0"
+
+while getopts ":n:f:p:h" o; do
     case "${o}" in
         n)
             rank=${OPTARG}
             ;;
         p)
             path=${OPTARG}
+            ;;
+        f)
+            tofile=${OPTARG}
+            if [ "$tofile" = "" ]; then tofile="./$0.txt"; fi
             ;;
         h)
             manual
@@ -38,8 +45,15 @@ while getopts ":n:p:h" o; do
     esac
 done
 
-echo "Count	Title" 
-find $path | awk -F"/" '{ print substr($NF,16) }' | sort | uniq -c | sort -nr | head -n $rank
+if [ "$tofile" = "0" ]; then
+    echo "Count	Title"
+    find $path | awk -F"/" '{ print substr($NF,16) }' | sort | uniq -c | sort -nr | head -n $rank
+else
+    find $path | awk -F"/" '{ print substr($NF,16) }' | sort | uniq -c | sort -nr | head -n $rank > $tofile
+    #find $path | awk -F"/" '{ print substr($NF,16) }' | sort | uniq -c | sort -nr | head -n $rank | awk -F"\s+" '{ print $3 }' > $tofile
+fi 
+
+exit 0
 
 # Where:
 #    1. The find command retrieves a list of files with their absolute path
