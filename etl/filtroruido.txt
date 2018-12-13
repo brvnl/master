@@ -1,6 +1,2 @@
 /[0-9]{14}.txt
 /[0-9]{14}..txt
-PageNotFound.txt
-Pagenotfound.txt
-Paginanaoencontrada.txt
-Compartilharconteudo.txt

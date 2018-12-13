@@ -47,9 +47,9 @@ done
 
 if [ "$tofile" = "0" ]; then
     echo "Count	Title"
-    find $path | awk -F"/" '{ print substr($NF,16) }' | sort | uniq -c | sort -nr | head -n $rank
+    find $path -type f | awk -F"/" '{ print substr($NF,15) }' | sort | uniq -c | sort -nr | head -n $rank
 else
-    find $path | awk -F"/" '{ print substr($NF,16) }' | sort | uniq -c | sort -nr | head -n $rank > $tofile
+    find $path -type f | awk -F"/" '{ print substr($NF,15) }' | sort | uniq -c | sort -nr | head -n $rank > $tofile
     #find $path | awk -F"/" '{ print substr($NF,16) }' | sort | uniq -c | sort -nr | head -n $rank | awk -F"\s+" '{ print $3 }' > $tofile
 fi 
 
