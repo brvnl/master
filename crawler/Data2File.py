@@ -3,6 +3,7 @@ import time
 from newspaper import Article
 from builtins import str
 import unicodedata
+import datetime
 
 def normalizeFileName(input_str):
     #new_srt = normalizeStrUTF8(input_str)
@@ -38,7 +39,11 @@ def article2file( aArticle, path ):
     title4name = normalizeFileName(title4name)
 
     try:
-        date4name = aArticle.publish_date.strftime('%Y%m%d%H%M%S')
+        # Sometimes feeders provide wrong dates on the articles. If that is the case, use the current timestamp.
+        if int(aArticle.publish_date.strftime('%Y')) < int(datetime.datetime.now().strftime("%Y")):
+            date4name = aArticle.publish_date.strftime('%Y%m%d%H%M%S')
+        else:
+            date4name = time.strftime('%Y%m%d%H%M%S', time.gmtime())
     except:
         # If cannot retrieve publish date defaults to the day it has been captured
         date4name = time.strftime('%Y%m%d%H%M%S', time.gmtime())
