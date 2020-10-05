@@ -214,8 +214,18 @@ try:
 except:
     logging.warn("Failed to capture cnnbrasil.com.br.")
 
+# Build G1
+try:
+    g1Regex = re.compile('.*(noticia|economia|brasil|politica).*', re.IGNORECASE)
+    g1 = NPSpyderBR('g1.globo.com','http://g1.globo.com/', g1Regex)
+    total += g1.run()
+    del g1
+    gc.collect()
+except:
+    logging.warn("Failed to capture g1.globo.com.")
 
-'''
+
+#'''
 # Build Metropole: Working. Added and last revised on 02/10/2020
 try:
     metropoleRegex = re.compile('.*', re.IGNORECASE)
@@ -247,16 +257,6 @@ try:
 except:
     logging.warn("Failed to capture ultimoinstante.com.br.")
 
-# Build G1
-try:
-    g1Regex = re.compile('.*(noticia|economia|brasil|politica).*', re.IGNORECASE)
-    g1 = NPSpyderBR('g1.globo.com','http://g1.globo.com/', g1Regex)
-    total += g1.run()
-    del g1
-    gc.collect()
-except:
-    logging.warn("Failed to capture g1.globo.com.")
-
-'''
+#'''
 
 print("INFO - All feeders crawled, %d articles downloaded." %(total))
