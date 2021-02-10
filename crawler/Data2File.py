@@ -4,11 +4,17 @@ from newspaper import Article
 from builtins import str
 import unicodedata
 import datetime
+import re
+from unidecode import unidecode
 
 def normalizeFileName(input_str):
-    #new_srt = normalizeStrUTF8(input_str)
-    #return ''.join(c for c in new_srt if c.isalnum())
-    return ''.join(c for c in input_str if c.isalnum())
+    if (len(re.sub('[^A-Za-z0-0]','', input_str)) < 3):
+        print("WARN - Too many special chars on tittle, Cannot save article: \"" + input_str +"\". Discarded.")
+        return -1       
+    else:
+        tmp = unidecode(input_str)
+        return re.sub('[^A-Za-z0-0]','', tmp)
+    
 
 def normalizeStrUTF8(input_str):
     #nkfd_form = unicodedata.normalize('NFKD', unicode(input_str))
@@ -33,10 +39,17 @@ def article2file( aArticle, path ):
     # Extracts only the first 100 chars
     title4name = aArticle.title[:100]
 
+    #title4name_cleaned = ''.join(e for e in title4name if e.isalnum())
+    #if len(title4name_cleaned) < 3:
+    #   print("WARN - The title \"%s\" contains only special characters and cannot be saved. URL: %s" %(article.title, article.url))
+
     # Remove special characters (TO BE COMPLETED...)
     title4name = title4name.replace(" ", "")
     title4name = title4name.replace(",", "")
     title4name = normalizeFileName(title4name)
+
+    if title4name == -1:
+       return -1 
 
     try:
         # Sometimes feeders provide wrong dates on the articles. If that is the case, use the current timestamp.

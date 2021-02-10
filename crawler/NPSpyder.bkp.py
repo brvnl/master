@@ -45,11 +45,9 @@ class NPSpyder:
             visited += 1
             concluded = (float(visited) / total) * 100
 
-            #title_cleaned = ''.join(e for e in article.title if e.isalnum())
-            #if title_cleaned == '':
-            #    print("WARN - The title \"%s\" contains only special characters and cannot be saved. URL: %s" %(article.title, article.url))
-            #    counter += 1
-            #    next
+            if article.title:
+                print("WARN - %s %.0f%% concluded, downloading URL: %s" %(self.sourceName, concluded, article.url))
+                next
 
             # Complementing the paht with the month folder: yyyyMM
             try:
